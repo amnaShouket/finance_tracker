@@ -1,17 +1,10 @@
 import { BrowserRouter, NavLink, Route, Routes } from "react-router-dom";
 
 
-function InputsPage(){
-  return <h2>Input Page</h2>;
-}
+import InputsPage from "./pages/InputsPage";
+import DashboardPage from "./pages/DashboardPage";
+import InsightsPage from "./pages/InsightsPage";
 
-function DashboardPage(){
-  return <h2>Dashboard Page</h2>;
-}
-
-function InsightsPage() {
-  return <h2>Insights Page</h2>;
-}
 
 export default function App() {
   return (
