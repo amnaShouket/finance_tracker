@@ -1,4 +1,4 @@
-import type {MonthlySubscription, MonthlySummary, Subscription, Transaction} from '../types/finance';
+import type {MonthlySummary, Subscription, Transaction} from '../types/finance';
 
 
 export const transactions: Transaction[] = [
@@ -43,7 +43,7 @@ export const transactions: Transaction[] = [
     date: "2026-03-07",
   },
 ];
-export const mockSubsciptions: Subscription[] = [
+export const subscriptions: Subscription[] = [
 {
     id: "s1",
     name: "Netflix",
@@ -60,7 +60,7 @@ export const mockSubsciptions: Subscription[] = [
   },
 ]
 
-export const mockMonthlySummary: MonthlySummary = 
+export const monthlySummary: MonthlySummary = 
   {
     income: 2900,
     expenses: 1025,
