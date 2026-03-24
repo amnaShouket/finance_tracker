@@ -1,9 +1,15 @@
-import {useState} from "react"
+import {useFinance} from "../hooks/FinanceContext";
+
 
 export default function InputsPage(){
-    const [income, setIncome] = useState(2500)
-    const [expenses, setExpenses] = useState(1200)
-    const [savingsGoal, setSavingsGoal] = useState(500);
+    const{
+        income,
+        expenses,
+        savingsGoal,
+        setIncome, 
+        setExpenses,
+        setSavingsGoal
+    } = useFinance();
 
     return (
         <div>
@@ -97,11 +103,9 @@ export default function InputsPage(){
                     </p>
 
                 </div>
-
-                
         
-                </div>
             </div>
+        </div>
         
 
     )

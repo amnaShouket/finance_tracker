@@ -1,6 +1,11 @@
-import { monthlySummary, subscriptions, transactions } from "../data/mockData";
+import {subscriptions, transactions } from "../data/mockData";
+import {useFinance} from "../hooks/FinanceContext";
 
 export default function DashboardPage() {
+
+  const {income, expenses, savingsGoal} = useFinance();
+  const balance = income - expenses;
+
   return (
     <div>
       <h2 style={{ marginBottom: "24px" }}>Dashboard</h2>
@@ -23,7 +28,7 @@ export default function DashboardPage() {
         >
           <h3>Income</h3>
           <p style={{ fontSize: "24px", fontWeight: "bold", margin: 0 }}>
-            £{monthlySummary.income.toFixed(2)}
+            £{income.toFixed(2)}
           </p>
         </div>
 
@@ -37,7 +42,7 @@ export default function DashboardPage() {
         >
           <h3>Expenses</h3>
           <p style={{ fontSize: "24px", fontWeight: "bold", margin: 0 }}>
-            £{monthlySummary.expenses.toFixed(2)}
+            £{expenses.toFixed(2)}
           </p>
         </div>
 
@@ -51,10 +56,26 @@ export default function DashboardPage() {
         >
           <h3>Balance</h3>
           <p style={{ fontSize: "24px", fontWeight: "bold", margin: 0 }}>
-            £{monthlySummary.balance.toFixed(2)}
+            £{balance.toFixed(2)}
+          </p>
+        </div>
+
+
+        <div
+          style={{
+            background: "white",
+            padding: "20px",
+            borderRadius: "12px",
+            boxShadow: "0 1px 4px rgba(0, 0, 0, 0.08)",
+          }}
+        >
+          <h3>Savings Goal</h3>
+          <p style={{ fontSize: "24px", fontWeight: "bold", margin: 0 }}>
+            £{savingsGoal.toFixed(2)}
           </p>
         </div>
       </div>
+
 
       <div
         style={{
