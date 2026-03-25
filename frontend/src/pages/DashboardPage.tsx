@@ -1,5 +1,6 @@
 import {subscriptions, transactions } from "../data/mockData";
 import {useFinance} from "../hooks/FinanceContext";
+import TransactionList from "../components/TransactionList";
 
 export default function DashboardPage() {
 
@@ -93,14 +94,7 @@ export default function DashboardPage() {
           }}
         >
           <h3 style={{ marginBottom: "16px" }}>Transactions</h3>
-          <ul style={{ paddingLeft: "20px" }}>
-            {transactions.map((transaction) => (
-              <li key={transaction.id} style={{ marginBottom: "10px" }}>
-                <strong>{transaction.title}</strong> — £{transaction.amount} —{" "}
-                {transaction.type} — {transaction.category}
-              </li>
-            ))}
-          </ul>
+          <TransactionList transactions = {transactions}/>
         </div>
 
         <div
