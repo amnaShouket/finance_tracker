@@ -1,6 +1,7 @@
 import {subscriptions, transactions } from "../data/mockData";
 import {useFinance} from "../hooks/FinanceContext";
 import TransactionList from "../components/TransactionList";
+import SubscriptionList from "../components/SubscripitonList";
 
 export default function DashboardPage() {
 
@@ -106,15 +107,7 @@ export default function DashboardPage() {
           }}
         >
           <h3 style={{ marginBottom: "16px" }}>Subscriptions</h3>
-          <ul style={{ paddingLeft: "20px" }}>
-            {subscriptions.map((subscription) => (
-              <li key={subscription.id} style={{ marginBottom: "12px" }}>
-                <strong>{subscription.name}</strong> — £
-                {subscription.monthlyCost.toFixed(2)} — renews on{" "}
-                {subscription.renewalDate}
-              </li>
-            ))}
-          </ul>
+          <SubscriptionList subscriptions = {subscriptions}/>
         </div>
       </div>
     </div>
