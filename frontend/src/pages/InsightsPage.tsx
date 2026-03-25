@@ -1,6 +1,7 @@
-import { budgets, subscriptions, transactions } from "../data/mockData";
+import { subscriptions, transactions } from "../data/mockData";
 import { useFinance } from "../hooks/FinanceContext";
-import type { Budget, Category, Transaction } from "../types/finance";
+import type { Category, Transaction } from "../types/finance";
+import { getBudgetStatuses, getLatestMonthTransactions } from "../utils/budgetInsights";
 import {
   Bar,
   BarChart,
@@ -66,18 +67,6 @@ const buildMonthlyTrendData = (allTransactions: Transaction[]) => {
     }));
 };
 
-const getLatestMonthTransactions = (allTransactions: Transaction[]) => {
-  const latestMonth = allTransactions.reduce(
-    (latest, transaction) =>
-      transaction.date.slice(0, 7) > latest ? transaction.date.slice(0, 7) : latest,
-    "",
-  );
-
-  return allTransactions.filter(
-    (transaction) => transaction.date.slice(0, 7) === latestMonth,
-  );
-};
-
 const buildCategorySpendingData = (monthlyTransactions: Transaction[]) => {
   const categoryTotals = new Map<Category, number>();
 
@@ -98,35 +87,8 @@ const buildCategorySpendingData = (monthlyTransactions: Transaction[]) => {
     .sort((a, b) => b.value - a.value);
 };
 
-const buildBudgetProgress = (
-  budgetTargets: Budget[],
-  monthlyTransactions: Transaction[],
-) => {
-  const expenseTotals = new Map<Category, number>();
-
-  monthlyTransactions
-    .filter((transaction) => transaction.type === "expense")
-    .forEach((transaction) => {
-      expenseTotals.set(
-        transaction.category,
-        (expenseTotals.get(transaction.category) ?? 0) + transaction.amount,
-      );
-    });
-
-  return budgetTargets.map((budget) => {
-    const spent = expenseTotals.get(budget.category) ?? 0;
-    const progress = budget.monthlyLimit === 0 ? 0 : (spent / budget.monthlyLimit) * 100;
-
-    return {
-      ...budget,
-      spent,
-      progress,
-    };
-  });
-};
-
 export default function InsightsPage() {
-  const { income, expenses, savingsGoal } = useFinance();
+  const { income, expenses, savingsGoal, budgets } = useFinance();
   const balance = income - expenses;
   const savingsProgress =
     savingsGoal === 0 ? 0 : Math.min((balance / savingsGoal) * 100, 100);
@@ -135,7 +97,8 @@ export default function InsightsPage() {
   const monthlyTrendData = buildMonthlyTrendData(transactions);
   const latestMonthTransactions = getLatestMonthTransactions(transactions);
   const categorySpendingData = buildCategorySpendingData(latestMonthTransactions);
-  const budgetProgress = buildBudgetProgress(budgets, latestMonthTransactions);
+  const budgetProgress = getBudgetStatuses(budgets, transactions);
+  const budgetWarnings = budgetProgress.filter((budget) => budget.status !== "ok");
 
   const latestMonthExpenses = latestMonthTransactions
     .filter((transaction) => transaction.type === "expense")
@@ -251,6 +214,23 @@ export default function InsightsPage() {
             In {latestMonthLabel}, subscriptions accounted for{" "}
             <strong>{subscriptionsShare.toFixed(1)}%</strong> of all expenses.
           </p>
+        </div>
+
+        <div style={cardStyle}>
+          <h3>Budget Watch</h3>
+          <p style={{ margin: "0 0 8px" }}>
+            {budgetWarnings.length > 0
+              ? `${budgetWarnings.length} categories are close to or over budget.`
+              : "No category is close to its budget limit right now."}
+          </p>
+          {budgetWarnings[0] ? (
+            <p style={{ margin: 0 }}>
+              <strong style={{ textTransform: "capitalize" }}>
+                {budgetWarnings[0].category}
+              </strong>{" "}
+              is currently at {budgetWarnings[0].progress.toFixed(0)}% of budget.
+            </p>
+          ) : null}
         </div>
       </div>
 
