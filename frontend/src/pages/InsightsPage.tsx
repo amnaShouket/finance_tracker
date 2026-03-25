@@ -10,7 +10,7 @@ export default function  InsightsPage(){
 
             <div style = {{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(400px, 1fr))",
                 gap: "16px",
                 marginBottom: "32px"
             }}>
@@ -45,9 +45,24 @@ export default function  InsightsPage(){
                     boxShadow: "0 1px 4px rgba(0,0,0,0.08)"
                 }}>
                     <h3>Savings Progress</h3>
-                    <p style = {{fontSize: "24px", fontWeight: "bold", margin: 0}}>
-                        {savingsProgress.toFixed(2)}%
-                    </p>
+                    <div style = {{
+                        width: "100%",
+                        height: "20px",
+                        background: "#eee",
+                        borderRadius: "999px",
+                        marginBottom:"12px",
+                    }}>
+                        <div style = {{
+                            width: `${savingsProgress}%`,
+                            height: "80%",
+                            background: savingsProgress >= 100 ? "#4caf50" : "#2196f3",
+                            borderRadius: "999px",
+                        }}>
+                        </div>
+                        <p style = {{marginBottom: 0, marginTop: "8px"}}>
+                            You have reached <strong>{savingsProgress.toFixed(1)}%</strong> of your monthly savings goal. 
+                        </p>
+                    </div>
                 </div>
 
                 <div style = {{
