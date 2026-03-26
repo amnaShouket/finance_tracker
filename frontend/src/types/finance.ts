@@ -29,6 +29,11 @@ export type Subscription = {
     renewalDate: string;
 };
 
+export type Budget = {
+    category: Category;
+    monthlyLimit: number;
+};
+
 export type MonthlySummary = {
     income: number;
     expenses: number;
